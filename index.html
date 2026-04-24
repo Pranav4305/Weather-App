@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Web App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./src/styles.css">
+  <script src="./src/script.js" defer></script>
+</head>
+<body>
+  <!-- Weather Card -->
+  <div class="card" id="weather-card">
+    <div class="search">
+      <input type="text" class="search-bar" placeholder="Enter city name..." aria-label="Search city">
+      <button class="search-button" aria-label="Search">
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg">
+          <path d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0 0 11.6 0l43.6-43.5a8.2 8.2 0 0 0 0-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z"></path>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="error-message" id="error-message">
+      City not found. Please try again.
+    </div>
+
+    <div class="weather loading" id="weather-content">
+      <h2 class="city">Weather in Location</h2>
+      <h1 class="temp">--°C</h1>
+      <div class="flex">
+        <img src="https://openweathermap.org/img/wn/04n.png" alt="Weather icon" class="icon" />
+        <div class="description">Fetching details...</div>
+      </div>
+      <div class="details">
+        <div class="detail-item humidity">
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1.2em" width="1.2em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 16a6 6 0 0 0 6-6c0-1.655-1.122-2.904-2.432-4.362C10.254 4.176 8.75 2.503 8 0c-.75 2.503-2.254 4.176-3.568 5.638C3.122 7.096 2 8.345 2 10a6 6 0 0 0 6 6zM6.646 4.646l.708.708C8.5 4.207 8.5 2.226 8.5 2.226v.012c.002.003.003.01.01.026.021.066.064.215.132.443.136.455.35 1.106.618 1.838a19.743 19.743 0 0 0 1.579 3.447 11.238 11.238 0 0 0 1.258 1.764c.224.256.467.545.698.857.227.307.447.653.606 1.054.162.408.269.873.269 1.401 0 1.341-.532 2.545-1.393 3.42C11.411 15.612 10.25 16 9 16c-1.25 0-2.411-.388-3.279-1.026C4.858 14.098 4.327 12.894 4.327 11.554c0-.528.107-.993.269-1.401.159-.401.379-.747.606-1.054.23-.312.474-.601.698-.857a11.235 11.235 0 0 0 1.258-1.764 19.743 19.743 0 0 0 1.579-3.447c.268-.732.482-1.383.618-1.838a6.387 6.387 0 0 0 .142-.469z"/></svg>
+          <span class="humidity-text">Humidity: --%</span>
+        </div>
+        <div class="detail-item wind">
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1.2em" width="1.2em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M12.22 17.037l-1.04-.6 1.956-3.388h-5.07v-1.2h5.07l-1.956-3.388 1.04-.6 2.65 4.588-2.65 4.588zM4.5 11.45V6.7H1.3V5.5H5.7v5.95H4.5zM17.5 12h-3v-1.2h3V6.05h1.2v5.95h-1.2v-1.2zm-12.28-.6l2.65-4.588 1.04.6-1.956 3.388h5.07v1.2H6.953l1.956 3.388-1.04.6-2.65-4.588z"></path></svg>
+          <span class="wind-text">Wind speed: -- km/h</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+  <script>
+    VanillaTilt.init(document.querySelectorAll(".card"), {
+      max: 6,
+      speed: 400,
+      scale: 1.02,
+      glare: true,
+      "max-glare": 0.4,
+    });
+  </script>
+</body>
+</html>
