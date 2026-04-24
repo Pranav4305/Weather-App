@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Weather-Web-App
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
   <ol>
@@ -32,3 +33,6 @@ and fire up the Local Development server using [Live Server extension](https://m
 ### License
 
 Distributed under the MIT License. See `LICENSE` for more information.
+=======
+# Weather-App
+>>>>>>> c73abfb1f7fc1c99508564518c03ac4c33e1609c
