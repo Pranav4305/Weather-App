@@ -35,7 +35,3 @@ To get a local copy up and running, follow these simple steps:
    cd weather-app
    ```
 3. Open `index.html` in your browser, or for the best development experience, use an extension like **Live Server** in VS Code.
-
-## 📝 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
