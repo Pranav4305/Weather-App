@@ -1,27 +1,18 @@
-// Mapping common weather conditions to high-quality Unsplash images
-const weatherBackgrounds = {
-  Clear: "https://images.unsplash.com/photo-1601297183305-6df142704ea2?auto=format&fit=crop&q=80&w=1920&h=1080", // Clear sky
-  Clouds: "https://images.unsplash.com/photo-1534088568595-a066f410cbda?auto=format&fit=crop&q=80&w=1920&h=1080", // Clouds
-  Rain: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&q=80&w=1920&h=1080", // Rain
-  Snow: "https://images.unsplash.com/photo-1491002052546-bf38f186af56?auto=format&fit=crop&q=80&w=1920&h=1080", // Snow
-  Thunderstorm: "https://images.unsplash.com/photo-1605727216801-e27ce1d0ce49?auto=format&fit=crop&q=80&w=1920&h=1080", // Thunderstorm
-  Drizzle: "https://images.unsplash.com/photo-1556485689-33e55ab56127?auto=format&fit=crop&q=80&w=1920&h=1080", // Drizzle
-  Mist: "https://images.unsplash.com/photo-1543968996-ee822b8176ba?auto=format&fit=crop&q=80&w=1920&h=1080", // Mist/Fog
-  Smoke: "https://images.unsplash.com/photo-1522881451255-f59ad836fdfb?auto=format&fit=crop&q=80&w=1920&h=1080", // Smoke
-  Haze: "https://images.unsplash.com/photo-1522881451255-f59ad836fdfb?auto=format&fit=crop&q=80&w=1920&h=1080", // Haze
-  Dust: "https://images.unsplash.com/photo-1545134969-8debd725b733?auto=format&fit=crop&q=80&w=1920&h=1080", // Dust
-  Fog: "https://images.unsplash.com/photo-1543968996-ee822b8176ba?auto=format&fit=crop&q=80&w=1920&h=1080", // Fog
-  Sand: "https://images.unsplash.com/photo-1545134969-8debd725b733?auto=format&fit=crop&q=80&w=1920&h=1080", // Sand
-  Ash: "https://images.unsplash.com/photo-1522881451255-f59ad836fdfb?auto=format&fit=crop&q=80&w=1920&h=1080", // Ash
-  Squall: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&q=80&w=1920&h=1080", // Squall
-  Tornado: "https://images.unsplash.com/photo-1527482797697-8795b05a13fe?auto=format&fit=crop&q=80&w=1920&h=1080", // Tornado
-  Default: "https://images.unsplash.com/photo-1504608524841-42ce6c20b004?auto=format&fit=crop&q=80&w=1920&h=1080" // Default/Nature
+// Aurora Color Palettes based on Weather Condition
+const auroraPalettes = {
+  Clear: { c1: "#ff7e5f", c2: "#feb47b", c3: "#ff9966" }, // Warm Sunrise/Sunset vibes
+  Clouds: { c1: "#5c6bc0", c2: "#3949ab", c3: "#9fa8da" }, // Moody Blues
+  Rain: { c1: "#141e30", c2: "#243b55", c3: "#0d47a1" }, // Deep Stormy Blues
+  Snow: { c1: "#83a4d4", c2: "#b6fbff", c3: "#ffffff" }, // Icy Cyans
+  Thunderstorm: { c1: "#23074d", c2: "#cc5333", c3: "#1a0033" }, // Purple & Orange flashes
+  Drizzle: { c1: "#89f7fe", c2: "#66a6ff", c3: "#4facfe" }, // Light watery blues
+  Mist: { c1: "#757f9a", c2: "#d7dde8", c3: "#606c88" }, // Foggy Grays
+  Default: { c1: "#1a2a6c", c2: "#b21f1f", c3: "#fdbb2d" } // Classic Aurora
 };
 
 const weather = {
   apiKey: "aba6ff9d6de967d5eac6fd79114693cc",
   
-  // Fetch weather by city name
   fetchWeather: async function (city) {
     this.showLoading();
     try {
@@ -37,11 +28,9 @@ const weather = {
       this.displayWeather(data);
     } catch (error) {
       this.showError();
-      console.error("Error fetching weather:", error);
     }
   },
 
-  // Fetch weather by coordinates (Geolocation)
   fetchWeatherByCoords: async function (lat, lon) {
     this.showLoading();
     try {
@@ -57,30 +46,36 @@ const weather = {
       this.displayWeather(data);
     } catch (error) {
       this.fetchWeather("Manipal"); // Fallback
-      console.error("Error fetching weather by coords:", error);
     }
   },
 
   displayWeather: function (data) {
     const { name } = data;
-    const { icon, description, main } = data.weather[0];
-    const { temp, humidity } = data.main;
+    const { icon, description, main: weatherMain } = data.weather[0];
+    const { temp, humidity, feels_like, pressure } = data.main;
     const { speed } = data.wind;
 
-    document.querySelector(".city").innerText = `Weather in ${name}`;
-    document.querySelector(".icon").src = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+    // Populate Data
+    document.querySelector(".city").innerText = name;
+    document.querySelector(".weather-icon").src = `https://openweathermap.org/img/wn/${icon}@4x.png`;
     document.querySelector(".description").innerText = description;
-    document.querySelector(".temp").innerText = `${Math.round(temp)}°C`;
-    document.querySelector(".humidity-text").innerText = `Humidity: ${humidity}%`;
-    document.querySelector(".wind-text").innerText = `Wind speed: ${speed} km/h`;
+    document.querySelector(".temp").innerText = `${Math.round(temp)}°`;
     
+    // Bento Metrics
+    document.querySelector(".feels-like").innerText = `${Math.round(feels_like)}°`;
+    document.querySelector(".humidity-text").innerText = `${humidity}%`;
+    document.querySelector(".wind-text").innerText = `${Math.round(speed * 3.6)} km/h`;
+    document.querySelector(".pressure").innerText = `${pressure} hPa`;
+    
+    // Update Aurora Gradient Colors
+    const palette = auroraPalettes[weatherMain] || auroraPalettes.Default;
+    document.documentElement.style.setProperty('--aurora-1', palette.c1);
+    document.documentElement.style.setProperty('--aurora-2', palette.c2);
+    document.documentElement.style.setProperty('--aurora-3', palette.c3);
+
     // Hide errors and loading state
-    document.querySelector(".error-message").classList.remove("show");
-    document.querySelector(".weather").classList.remove("loading");
-    
-    // Set background image based on weather condition
-    const backgroundUrl = weatherBackgrounds[main] || weatherBackgrounds.Default;
-    document.body.style.backgroundImage = `url('${backgroundUrl}')`;
+    document.getElementById("error-message").classList.remove("show");
+    document.getElementById("weather-content").classList.remove("loading");
   },
 
   search: function () {
@@ -88,22 +83,21 @@ const weather = {
     const city = searchBar.value.trim();
     if (city) {
       this.fetchWeather(city);
-      searchBar.value = ""; // Clear input after search
+      searchBar.value = ""; 
     }
   },
 
   showLoading: function() {
-    document.querySelector(".weather").classList.add("loading");
-    document.querySelector(".error-message").classList.remove("show");
+    document.getElementById("weather-content").classList.add("loading");
+    document.getElementById("error-message").classList.remove("show");
   },
 
   showError: function() {
-    document.querySelector(".weather").classList.add("loading");
-    document.querySelector(".error-message").classList.add("show");
+    document.getElementById("weather-content").classList.add("loading");
+    document.getElementById("error-message").classList.add("show");
   }
 };
 
-// Geolocation Logic
 const geocode = {
   getLocation: function() {
     if (navigator.geolocation) {
@@ -111,9 +105,8 @@ const geocode = {
         (position) => {
           weather.fetchWeatherByCoords(position.coords.latitude, position.coords.longitude);
         },
-        (error) => {
-          console.warn("Geolocation blocked or failed. Using fallback.", error);
-          weather.fetchWeather("Manipal"); // Fallback city
+        () => {
+          weather.fetchWeather("Manipal"); // Fallback
         }
       );
     } else {
@@ -122,7 +115,6 @@ const geocode = {
   }
 };
 
-// Event Listeners
 document.querySelector(".search-button").addEventListener("click", function () {
   weather.search();
 });
@@ -133,5 +125,4 @@ document.querySelector(".search-bar").addEventListener("keyup", function (event)
   }
 });
 
-// Initial load
 geocode.getLocation();
